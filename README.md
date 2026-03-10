@@ -79,7 +79,8 @@
 
 ## Как показать проект на интервью (2-3 минуты)
 
-1. Запустить `ansible-playbook -i ansible/inventory.ini ansible/site.yml`.
+1. Запустить playbook через WSL без хранения пароля в файле:
+	`wsl bash -lc 'cd /mnt/c/Users/rpro1/my_projects/sys_admin_portfolio && export WINRM_PASSWORD="YOUR_PASSWORD" && ansible-playbook -i ansible/inventory.ini ansible/site.yml -e "ansible_password=$WINRM_PASSWORD"'`.
 2. Показать пользователей, созданных из `examples/users.csv`.
 3. Показать доступ тестового пользователя к домашней/общей папке.
 4. Коротко показать результат backup (`wbadmin get versions`).
