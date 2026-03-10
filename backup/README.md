@@ -4,7 +4,7 @@
 
 - `Backup-FileServer.ps1`
 - `windows-server-backup-task-plan.md`
-- `test-restore-report.md` (экспортируйте в PDF для собеседования)
+- `test-restore-report.md`
 
 Рекомендуемые скриншоты:
 

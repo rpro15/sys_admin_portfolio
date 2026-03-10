@@ -4,7 +4,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/rpro15/sys_admin_portfolio?style=flat)
 ![GitHub top language](https://img.shields.io/github/languages/top/rpro15/sys_admin_portfolio?style=flat)
 
-Практическое портфолио для собеседований на позицию системного администратора (Junior/Middle).
+Практический проект по системному администрированию (Home-Lab).
 
 ## Оглавление
 
@@ -15,12 +15,9 @@
 - [Что я настроил и устранил лично](#что-я-настроил-и-устранил-лично)
 - [Быстрая проверка репозитория за 5 минут](#быстрая-проверка-репозитория-за-5-минут)
 - [Структура репозитория](#структура-репозитория)
-- [Как показать проект на интервью (2-3 минуты)](#как-показать-проект-на-интервью-2-3-минуты)
+- [Запуск и проверка стенда](#запуск-и-проверка-стенда)
 - [Скриншоты](#скриншоты)
 - [Демо-видео](#демо-видео)
-- [Самопрезентация (30-45 секунд)](#самопрезентация-30-45-секунд-ruen)
-- [HR Тренажер (15 вопросов)](#hr-тренажер-15-вопросов)
-- [Pre-Publish Чек-лист](#pre-publish-чек-лист)
 - [Важно](#важно)
 
 ## Коротко о проекте
@@ -75,12 +72,15 @@
 - `backup/` - скрипт бэкапа, план задачи, шаблон отчета по restore.
 - `docs/` - шаблон тикета, пример выездного отчета, схема сети.
 - `demo/` - сценарий демо-видео (2-3 минуты).
+- `run-ansible.ps1` - запуск Ansible через WSL одной командой из PowerShell.
 - `certificates/` - опционально: сканы сертификатов.
 
-## Как показать проект на интервью (2-3 минуты)
+## Запуск и проверка стенда
 
 1. Запустить playbook через WSL без хранения пароля в файле:
 	`wsl bash -lc 'cd /mnt/c/Users/rpro1/my_projects/sys_admin_portfolio && export WINRM_PASSWORD="YOUR_PASSWORD" && ansible-playbook -i ansible/inventory.ini ansible/site.yml -e "ansible_password=$WINRM_PASSWORD"'`.
+	Упрощенный вариант одной командой из PowerShell:
+	`./run-ansible.ps1 -Action playbook -PromptPassword -VerboseOutput`.
 2. Показать пользователей, созданных из `examples/users.csv`.
 3. Показать доступ тестового пользователя к домашней/общей папке.
 4. Коротко показать результат backup (`wbadmin get versions`).
@@ -98,19 +98,6 @@
 ## Демо-видео
 
 - YouTube (unlisted): ссылка хранится в `demo/README.md`
-
-## Самопрезентация (30-45 секунд, RU/EN)
-
-- Русская версия: `docs/interview-self-pitch.md`
-- English version: `docs/interview-self-pitch.en.md`
-
-## HR Тренажер (15 вопросов)
-
-- Практика HR-вопросов и готовые формулировки: `docs/hr-interview-trainer.md`
-
-## Pre-Publish Чек-лист
-
-- Перед публикацией выполните: `docs/pre-publish-checklist.md`
 
 ## Важно
 
