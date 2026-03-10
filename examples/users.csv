@@ -1,0 +1,4 @@
+GivenName,Surname,SamAccountName,UserPrincipalName,Department,Title,OU,Password
+Ivan,Petrov,ipetrov,ipetrov@corp.local,IT,Support Engineer,"OU=OfficeUsers,OU=Corp,DC=corp,DC=local",SET_STRONG_PASSWORD_PER_USER
+Anna,Sidorova,asidorova,asidorova@corp.local,HR,HR Specialist,"OU=OfficeUsers,OU=Corp,DC=corp,DC=local",SET_STRONG_PASSWORD_PER_USER
+Pavel,Kuznetsov,pkuznetsov,pkuznetsov@corp.local,Finance,Accountant,"OU=OfficeUsers,OU=Corp,DC=corp,DC=local",SET_STRONG_PASSWORD_PER_USER
