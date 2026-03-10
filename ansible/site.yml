@@ -1,0 +1,61 @@
+---
+- name: Configure Domain Controller baseline
+  hosts: domain_controllers
+  gather_facts: false
+  tasks:
+    - name: Install AD DS role
+      ansible.windows.win_feature:
+        name: AD-Domain-Services
+        state: present
+        include_management_tools: true
+
+    - name: Install DNS role
+      ansible.windows.win_feature:
+        name: DNS
+        state: present
+
+    - name: Install DHCP role
+      ansible.windows.win_feature:
+        name: DHCP
+        state: present
+
+    - name: Install RSAT AD tools
+      ansible.windows.win_feature:
+        name: RSAT-AD-Tools
+        state: present
+
+    - name: Create core OU structure
+      ansible.windows.win_powershell:
+        script: |
+          Import-Module ActiveDirectory
+          $ouList = @(
+            "OU=Corp,DC=corp,DC=local",
+            "OU=OfficeUsers,OU=Corp,DC=corp,DC=local",
+            "OU=Servers,OU=Corp,DC=corp,DC=local"
+          )
+          foreach ($ou in $ouList) {
+            if (-not (Get-ADOrganizationalUnit -Filter "DistinguishedName -eq '$ou'" -ErrorAction SilentlyContinue)) {
+              New-ADOrganizationalUnit -Name (($ou -split ',')[0] -replace 'OU=','') -Path ($ou -replace '^OU=[^,]+,','')
+            }
+          }
+
+    - name: Configure DHCP scope for VLAN 10
+      ansible.windows.win_powershell:
+        script: |
+          Add-DhcpServerv4Scope -Name "VLAN10-CORP" -StartRange 192.168.10.100 -EndRange 192.168.10.199 -SubnetMask 255.255.255.0 -ErrorAction SilentlyContinue
+          Set-DhcpServerv4OptionValue -ScopeId 192.168.10.0 -DnsServer 192.168.10.10 -Router 192.168.10.1 -DnsDomain corp.local
+
+    - name: Configure DHCP scope for VLAN 20
+      ansible.windows.win_powershell:
+        script: |
+          Add-DhcpServerv4Scope -Name "VLAN20-GUEST" -StartRange 192.168.20.100 -EndRange 192.168.20.199 -SubnetMask 255.255.255.0 -ErrorAction SilentlyContinue
+          Set-DhcpServerv4OptionValue -ScopeId 192.168.20.0 -DnsServer 192.168.10.10 -Router 192.168.20.1
+
+    - name: Create baseline GPO for workstation hardening
+      ansible.windows.win_powershell:
+        script: |
+          Import-Module GroupPolicy
+          if (-not (Get-GPO -Name "Workstation-Baseline" -ErrorAction SilentlyContinue)) {
+            New-GPO -Name "Workstation-Baseline"
+          }
+          New-GPLink -Name "Workstation-Baseline" -Target "OU=OfficeUsers,OU=Corp,DC=corp,DC=local" -Enforced No -ErrorAction SilentlyContinue

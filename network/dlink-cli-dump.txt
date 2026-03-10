@@ -1,0 +1,28 @@
+# D-Link CLI dump (sanitized)
+
+configure terminal
+
+create vlan VLAN10 tag 10
+create vlan VLAN20 tag 20
+
+config vlan VLAN10 add tagged 1-4
+config vlan VLAN20 add tagged 1-4
+
+config vlan VLAN10 add untagged 5-16
+config vlan VLAN20 add untagged 17-24
+
+# If L3 capable D-Link model is used:
+create ipif VLAN10 192.168.10.2/24 vlan VLAN10
+create ipif VLAN20 192.168.20.2/24 vlan VLAN20
+
+# DHCP scope relay or local scope example:
+enable dhcp_server
+create dhcp_server_pool VLAN10_POOL 192.168.10.0 255.255.255.0
+config dhcp_server_pool VLAN10_POOL add iprange 192.168.10.100 192.168.10.199
+config dhcp_server_pool VLAN10_POOL default_router 192.168.10.1
+
+create dhcp_server_pool VLAN20_POOL 192.168.20.0 255.255.255.0
+config dhcp_server_pool VLAN20_POOL add iprange 192.168.20.100 192.168.20.199
+config dhcp_server_pool VLAN20_POOL default_router 192.168.20.1
+
+save
