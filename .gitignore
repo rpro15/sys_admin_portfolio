@@ -1,0 +1,7 @@
+# SpecKit generated workspace artifacts
+.specify/
+.github/agents/
+.github/prompts/
+
+# Local editor settings
+.vscode/
